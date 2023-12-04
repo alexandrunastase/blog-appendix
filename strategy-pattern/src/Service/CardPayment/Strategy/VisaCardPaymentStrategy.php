@@ -12,15 +12,15 @@ use function uniqid;
 
 class VisaCardPaymentStrategy implements CardPaymentStrategyInterface
 {
-    public function isPaymentMethodSupported(string $paymentMethod): bool
+    public function isPaymentProviderSupported(string $paymentProvider): bool
     {
-        return $paymentMethod === PaymentProvider::VISA;
+        return $paymentProvider === PaymentProvider::VISA;
     }
 
     public function handlePayment(CardPaymentDto $payment): CardPaymentResponseDto
     {
         // Call Visa payment provider
-        // Add more logic
+        // More logic
 
         $transactionId = PaymentProvider::VISA . uniqid();
         return new CardPaymentResponseDto($transactionId);

@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class CardPaymentController
 {
     public function __construct(
-        private readonly CardPaymentServiceInterface $paymentService,
+        private readonly CardPaymentServiceInterface $cardPaymentService,
         private readonly SerializerInterface $serializer,
     ) {
     }
@@ -23,11 +23,9 @@ class CardPaymentController
     #[Route('/card-payments', methods: ['POST'])]
     public function index(Request $request): Response
     {
-        // Validation skipped to keep complexity lower
-
         $paymentDto = $this->serializer->deserialize($request->getContent(), CardPaymentDto::class, 'json');
 
-        $paymentResponse = $this->paymentService->handleCardPayment($paymentDto);
+        $paymentResponse = $this->cardPaymentService->handleCardPayment($paymentDto);
 
         return new JsonResponse($this->serializer->serialize($paymentResponse, 'json'), json: true);
     }

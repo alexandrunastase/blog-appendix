@@ -12,15 +12,15 @@ use function uniqid;
 
 class MastercardCardPaymentStrategy implements CardPaymentStrategyInterface
 {
-    public function isPaymentMethodSupported(string $paymentMethod): bool
+    public function isPaymentProviderSupported(string $paymentProvider): bool
     {
-        return $paymentMethod === PaymentProvider::MASTERCARD;
+        return $paymentProvider === PaymentProvider::MASTERCARD;
     }
 
     public function handlePayment(CardPaymentDto $payment): CardPaymentResponseDto
     {
         // Call Mastercard payment provider
-        // Add more logic
+        // More logic
 
         $transactionId = PaymentProvider::MASTERCARD . uniqid();
         return new CardPaymentResponseDto($transactionId);

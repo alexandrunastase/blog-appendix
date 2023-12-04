@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag(CardPaymentStrategyInterface::class)]
 interface CardPaymentStrategyInterface
 {
-    public function isPaymentMethodSupported(string $paymentMethod);
+    public function isPaymentProviderSupported(string $paymentProvider);
 
     public function handlePayment(CardPaymentDto $payment): CardPaymentResponseDto;
 }

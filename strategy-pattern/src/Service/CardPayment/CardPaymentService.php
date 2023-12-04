@@ -30,19 +30,19 @@ class CardPaymentService implements CardPaymentServiceInterface
         return $paymentStrategy->handlePayment($paymentDto);
     }
 
-    public function getStrategy(string $paymentMethod): CardPaymentStrategyInterface
+    public function getStrategy(string $paymentProvider): CardPaymentStrategyInterface
     {
-        $chosenPaymentStrategy = null;
+        $pickedPaymentStrategy = null;
         foreach ($this->cardPaymentStrategies as $paymentStrategy) {
-            if ($paymentStrategy->isPaymentMethodSupported($paymentMethod)) {
-                $chosenPaymentStrategy = $paymentStrategy;
+            if ($paymentStrategy->isPaymentProviderSupported($paymentProvider)) {
+                $pickedPaymentStrategy = $paymentStrategy;
             }
         }
 
-        if (is_null($chosenPaymentStrategy)) {
-            throw UnsupportedPaymentStrategyException::createForPaymentProvider($paymentMethod);
+        if (is_null($pickedPaymentStrategy)) {
+            throw UnsupportedPaymentStrategyException::createForPaymentProvider($paymentProvider);
         }
 
-        return $chosenPaymentStrategy;
+        return $pickedPaymentStrategy;
     }
 }
