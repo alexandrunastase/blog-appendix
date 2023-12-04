@@ -1,0 +1,44 @@
+version: '3.5'
+
+services:
+    devbox:
+        container_name: "devbox-nginx"
+        build:
+            context: ./docker/nginx
+            dockerfile: Dockerfile
+        ports:
+            - "9001:80"
+        volumes:
+            - .:/app:cached
+        restart: unless-stopped
+        depends_on:
+            - devbox-service
+
+    devbox-service:
+        container_name: devbox-service
+        build:
+            context: .
+        volumes:
+            - .:/app:cached
+            - ./docker/service/php.ini:/usr/local/etc/php/conf.d/99-app.ini
+            - ./docker/service/www.conf:/usr/local/etc/php-fpm.d/www.conf
+        restart: unless-stopped
+        env_file:
+            - .env.local
+        depends_on:
+            - devbox-database
+
+    devbox-database:
+        image: postgres:15-alpine
+        container_name: "devbox-database"
+        restart: always
+        env_file:
+            - .env.local
+        ports:
+            - "5431:5432"
+        volumes:
+            - devbox-database-volume:/var/lib/postgresql/data
+
+volumes:
+    devbox-database-volume:
+        driver: "local"
